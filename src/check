@@ -1,0 +1,15 @@
+public static void main(String[] args)
+{
+	try{
+		ArrayList myList=new ArrayList();
+		String[] str=new String[]{};
+		ListReader lts=new ListReader();
+		lts.addElement(myList,str);
+		
+		System.out.println("List:"+myList);
+	}
+	catch(Exception ex)
+	{
+		System.out.println(ex.getMessage());
+	}
+}
