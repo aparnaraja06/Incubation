@@ -1,0 +1,5 @@
+#Writing properties to file
+#Wed Dec 29 16:45:37 IST 2021
+1=str1
+2=str2
+3=str3
