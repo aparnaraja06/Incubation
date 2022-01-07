@@ -5,6 +5,6 @@ public class ExtendThread extends Thread{
 		System.out.println(Thread.currentThread().getName());
 		System.out.println(Thread.currentThread().getPriority());
 		System.out.println(Thread.currentThread().getState());
-	}
+		}
 
 }
