@@ -1,0 +1,100 @@
+@charset "UTF-8";
+.center
+{
+  margin-left: auto;
+  margin-right: auto;
+  margin-top:100px;
+  background-color:White;
+}
+h1
+{
+	margin-left:300px;
+	margin-right:500px;
+	padding:20px;
+	text-align:center;
+}
+.edit
+{
+	
+	color:black;
+    text-decoration:none;
+	text-align:center;
+}
+.offImg
+{
+	border-radius:50%;
+	width:50px;
+	height:50px;
+	object-fit:contain;
+	align:center;
+	
+}
+h2
+{
+	text-align:center;
+	color:MediumSeaGreen;
+	margin-top:100px;
+	margin-right:200px;
+}
+h3
+{
+	text-align:center;
+	color:Tomato;
+}
+.record
+{
+	text-align:center;
+	color:DarkRed;
+	font-size: 1.875em;
+}
+th
+{
+	background-color:LightSteelBlue;
+}
+td{
+  height: 50px;
+  vertical-align: bottom;
+}
+th
+{
+	width: 200px;
+    text-align: center;
+     padding: 5px;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+.addAcc
+{
+	width:20%;
+	padding:20px;
+	margin-left:600px;
+	background-color:BlanchedAlmond;
+	color:DeepPink;
+	text-decoration:none;
+}
+.inactive
+{
+	width:20%;
+	padding:20px;
+	background-color:BlanchedAlmond;
+	color:DeepPink;
+	margin-right:700px;
+	text-decoration:none;
+}
+.addbtn
+{
+	width: 20%;  
+    height: 50px;  
+    border: none;  
+   
+    border-radius: 50px;    
+    background-color:BlanchedAlmond;
+    color:DeepPink;
+    
+}
+
+input{
+	
+	margin-left:650px;
+	margin-right:400px;
+	
+}
