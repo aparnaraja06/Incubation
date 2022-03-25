@@ -1,0 +1,58 @@
+@charset "UTF-8";
+.sign
+{
+    width:100px;
+    float:right;   
+    margin-right:200px;
+    
+}
+h3
+{
+	text-align:center;
+}
+.image
+{
+	justify-content: center; 
+	margin-bottom:50px;
+}
+
+td
+{
+	height: 50px;
+	text-align:center;
+}
+table, td, th {
+  border: 1px solid black;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+li
+{
+	font-size:18px;
+	
+}
+p
+{
+	font-size:18px;
+	text-align:center;
+	
+}
+.size
+{
+	margin-right:300px;
+	margin-left:300px;
+	border-style:ridge;
+	border-bottom:hidden;
+	border: 1px solid;
+  padding: 10px;
+  box-shadow: 5px 10px 8px 10px #888888;
+}
+h2
+{
+	border-style:inset;
+	background-color:LightSteelBlue;
+	text-align:center;
+}
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>calculator2</title>
+<link href="/home/inc8/eclipse-workspace/ScientificCalc/src/main/webapp/calculator.css" rel="stylesheet">
+<script type="text/javascript" src="calculator2.js"></script>
+</head>
+<body>
+	<div class="container">
+	<div class="calcDisplay">
+		<input type="text" id="display1"><br>
+		<input type="text" id="display2">
+		</div>
+		<div class="calcKeys">
+		<table>
+			<tr>
+				<td><input type="button" value="1" class="button" onClick="showValue('1')"></td>
+				<td><input type="button" value="2" class="button" onClick="showValue('2')"></td>
+				<td><input type="button" value="3" class="button" onClick="showValue('3')"></td>
+				<td><input type="button"  class="operator" value="+" onClick="getOperator(this)" id="+"></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="4" class="button" onClick="showValue('4')"></td>
+				<td><input type="button" value="5" class="button" onClick="showValue('5')"></td>
+				<td><input type="button" value="6" class="button" onClick="showValue('6')"></td>
+				<td><input type="button" class="operator" value="-" onClick="getOperator(this)" id="-"></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="7" class="button" onClick="showValue('7')"></td>
+				<td><input type="button" value="8" class="button" onClick="showValue('8')"></td>
+				<td><input type="button" value="9" class="button" onClick="showValue('9')"></td>
+				<td><input type="button"  class="operator" value="*" onClick="getOperator(this)" id="*"></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="." class="button" onClick="showValue('.')"></td>
+				<td><input type="button" value="0" class="button" onClick="showValue('0')"></td>
+				<td><input type="button" class="operator" id="=" value="=" onClick="solve(this.value)"></td>
+				<td><input type="button" class="operator" value="/" onClick="getOperator(this)" id="/"></td>
+			</tr>
+			<tr>
+			<td colspan="4"><input class="button"  type="button" id="clear" value="CLEAR" onClick="clearBox()"></td>
+		</table>
+		</div>
+	</div>
+</body>
+</html>
