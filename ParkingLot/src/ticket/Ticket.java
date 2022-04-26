@@ -7,9 +7,9 @@ public class Ticket {
 
 	private int ticketNumber;
 	private int floorNumber;
-	private String vehicleType;
-	private double cost;
-	private LocalTime entryTime;
+	private long vehicleNum;
+	private int spaceNumber;
+	private String entryTime;
 	
 	public int getTicketNumber() {
 		return ticketNumber;
@@ -23,27 +23,28 @@ public class Ticket {
 	public void setFloorNumber(int floorNumber) {
 		this.floorNumber = floorNumber;
 	}
-	public String getVehicleType() {
-		return vehicleType;
+	public long getVehicleNum() {
+		return vehicleNum;
 	}
-	public void setVehicleType(String vehicleType) {
-		this.vehicleType = vehicleType;
+	public void setVehicleNum(long vehicleNum) {
+		this.vehicleNum = vehicleNum;
 	}
-	public double getCost() {
-		return cost;
+	
+	public int getSpaceNumber() {
+		return spaceNumber;
 	}
-	public void setCost(double cost) {
-		this.cost = cost;
-	}
-		
-	public LocalTime getEntryTime() {
+	public void setSpaceNumber(int spaceNumber) {
+		this.spaceNumber = spaceNumber;
+	}	
+	
+	public String getEntryTime() {
 		return entryTime;
 	}
-	public void setEntryTime(LocalTime entryTime) {
+	public void setEntryTime(String entryTime) {
 		this.entryTime = entryTime;
 	}
 	public String toString() {
 		
-		return "TicketNumber "+ticketNumber+" Floor Number "+floorNumber+ " cost "+ cost+" Time "+entryTime;
+		return "TicketNumber "+ticketNumber+" Floor Number "+floorNumber+" Space Number "+spaceNumber+" Time "+entryTime;
 	}
 }

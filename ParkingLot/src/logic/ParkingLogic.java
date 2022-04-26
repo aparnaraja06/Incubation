@@ -4,8 +4,10 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
+import customexception.CustomException;
 import floor.Floor;
 import park.ParkingOperations;
+import space.ParkingSpace;
 import ticket.Ticket;
 import vehicle.Vehicle;
 
@@ -13,47 +15,37 @@ public class ParkingLogic {
 
 	ParkingOperations park = new ParkingOperations();
 
-	public Ticket addVehicle(Vehicle vehicle, int floor_num) {
-		return park.addVehicle(vehicle, floor_num);
+	
+
+	public List<ParkingSpace> getSpace(String type, int floor_num) throws CustomException {
+		return park.getSpace(type, floor_num);
 	}
 
-	public int getFreeSpace(String type, int floor_num) {
-		return park.getFreeSpace(type, floor_num);
-	}
-
-	public List<Floor> getFloorDetails() {
+	public List<ParkingSpace> getFloorDetails() {
 		return park.getFloorDetails();
 	}
 
-	public boolean bookSlot(String type, int floor_num, int change) {
-		return park.bookSlot(type, floor_num, change);
+	public ParkingSpace bookSlot(ParkingSpace space) throws CustomException {
+		return park.bookSlot(space);
 	}
 
-	public LocalTime getTime() {
-		return park.getTime();
+	public Ticket getTicket(ParkingSpace space, Vehicle vehicle) throws CustomException {
+		return park.getTicket(space, vehicle);
 	}
 
-	public Ticket getTicket(int ticket_num, Vehicle vehicle, int floor_num) {
-		return park.getTicket(ticket_num, vehicle, floor_num);
+	public Ticket getTicketByNum(int ticket_num) throws CustomException {
+		return park.getTicketByNum(ticket_num);
 	}
 
-	public Ticket getTicketByVehicleNum(long vehicle_num) {
-		return park.getTicketByVehicleNum(vehicle_num);
+	public int checkVehicle(int ticket_num,long vehicleNum) throws CustomException {
+		return park.checkVehicle(ticket_num, vehicleNum);
 	}
 
-	public Vehicle getVehicleByTicket(int ticket_num) {
-		return park.getVehicleByTicket(ticket_num);
-	}
-
-	public LocalTime getTime(long vehicle_num) {
-		return park.getTime(vehicle_num);
-	}
-
-	public double calculateCost(long hours) {
+	public double calculateCost(int hours) throws CustomException {
 		return park.calculateCost(hours);
 	}
 
-	public Map<Integer, Floor> updateSpaces(Ticket ticket) {
-		return park.updateSpaces(ticket);
+	public boolean updateSpace(Ticket ticket) throws CustomException {
+		return park.updateSpace(ticket);
 	}
 }

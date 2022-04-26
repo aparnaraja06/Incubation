@@ -6,11 +6,16 @@ public class ParkingSpace {
 
 	private int number;
 	private int floorNumber;
-	private boolean isFilled=false;
 	private String type;
 	private Vehicle vehicle;
 	
 	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public int getFloorNumber() {
 		return floorNumber;
 	}
@@ -23,18 +28,7 @@ public class ParkingSpace {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	public boolean isFilled() {
-		return isFilled;
-	}
-	public void setFilled(boolean isFilled) {
-		this.isFilled = isFilled;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
+	
 	public Vehicle getVehicle() {
 		return vehicle;
 	}
@@ -43,6 +37,6 @@ public class ParkingSpace {
 	}
 	
 	public String toString() {
-		return floorNumber+" "+number+" "+isFilled;
+		return floorNumber+" "+number+" "+type;
 	}
 }
