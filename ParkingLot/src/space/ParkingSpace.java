@@ -37,6 +37,6 @@ public class ParkingSpace {
 	}
 	
 	public String toString() {
-		return floorNumber+" "+number+" "+type;
+		return "Floor Number : "+floorNumber+" Space Number : "+number+" Type : "+type;
 	}
 }

@@ -10,7 +10,21 @@ public class Ticket {
 	private long vehicleNum;
 	private int spaceNumber;
 	private String entryTime;
+	private String type;
+	private int customerId;
 	
+	public int getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public int getTicketNumber() {
 		return ticketNumber;
 	}

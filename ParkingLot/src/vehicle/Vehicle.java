@@ -4,14 +4,16 @@ public class Vehicle {
              
 	private long Number;
 	private String type;
-	private long ticketNumber;
-	private boolean isPaid=false;
+	private int customerId;
 	
-	public boolean isPaid() {
-		return isPaid;
+	
+	
+	
+	public int getCustomerId() {
+		return customerId;
 	}
-	public void setPaid(boolean isPaid) {
-		this.isPaid = isPaid;
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
 	}
 	public long getNumber() {
 		return Number;
@@ -25,15 +27,9 @@ public class Vehicle {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public long getTicketNumber() {
-		return ticketNumber;
-	}
-	public void setTicketNumber(long ticketNumber) {
-		this.ticketNumber = ticketNumber;
-	}
-	
+		
 	public String toString()
 	{
-		return Number+" "+type;
+		return Number+" "+type+" "+customerId;
 	}
 }
