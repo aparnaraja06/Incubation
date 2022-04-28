@@ -4,8 +4,9 @@ public class User {
 
 	private int userId;
 	private String userName;
-	private String hotelName;
-	private double totalCost;
+	private String location;
+	private long mobileNumber;
+	
 	public int getUserId() {
 		return userId;
 	}
@@ -18,20 +19,23 @@ public class User {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public String getHotelName() {
-		return hotelName;
+	public String getLocation() {
+		return location;
 	}
-	public void setHotelName(String hotelName) {
-		this.hotelName = hotelName;
+	public void setLocation(String location) {
+		this.location = location;
 	}
-	public double getTotalCost() {
-		return totalCost;
+	public long getMobileNumber() {
+		return mobileNumber;
 	}
-	public void setTotalCost(double totalCost) {
-		this.totalCost = totalCost;
+	public void setMobileNumber(long mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+	@Override
+	public String toString() {
+		return "userId " + userId + ", userName : " + userName + ", location : " + location + ","
+				+ " mobileNumber : " + mobileNumber ;
 	}
 	
-	public String toString() {
-		return userId+" "+userName+" "+hotelName+" "+totalCost;
-	}
+	
 }

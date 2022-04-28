@@ -1,23 +1,31 @@
 package operations;
 
 import java.util.ArrayList;
-
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import book.BookingInfo;
 import hotel.HotelInfo;
 import user.User;
 
-public class HotelOperations{
-	
+/*public class HotelOperationss {
+
 	private int userId=0;
 
-	List<HotelInfo> hotelList=new ArrayList<>();
+	Map<String,List<Hotel>> hotelMap=new HashMap<>();
 	List<User> userList=new ArrayList<>();
 	List<BookingInfo> bookList=new ArrayList<>();
-		
+	
+	
+	public HotelOperations() {
+		addDefaultHotels();
+		addDefaultUsers();
+	}
+	
 	private int generateId() {
 		return ++userId;
 	}
@@ -31,7 +39,14 @@ public class HotelOperations{
 		
 		for(int i=0;i<name.length;i++)
 		{
-			HotelInfo hotel=new HotelInfo();
+			Hotel hotel=new Hotel();
+			
+			List<Hotel> list=hotelMap.get(location[i]);
+			
+			if(list==null)
+			{
+				list=new ArrayList<>();
+			}
 			
 			hotel.setName(name[i]);
 			hotel.setRooms(rooms[i]);
@@ -39,16 +54,18 @@ public class HotelOperations{
 			hotel.setRating(rating[i]);
 			hotel.setPrice(price[i]);
 			
-			hotelList.add(hotel);
+			list.add(hotel);
+			
+			hotelMap.put(location[i], list);
 			
 		}
 	}
 	
 	public void addDefaultUsers() {
-		
+	
 		String[] name= {"User1","User2","User3"};
-		String[] location= {"Ooty","Bangalore","Goa"};
-		long[] mobile= {9857932473L,8493278945L,9845738257L};
+		String[] location= {"ooty","bangalore","chennai","kodaikanal","goa"};
+		long[] mobile= {9857932473L,8493278945L,9327589320L,8496478374L,9845738257L};
 		
 		for(int i=0;i<name.length;i++)
 		{
@@ -66,41 +83,29 @@ public class HotelOperations{
 		
 	}
 	
-	public void addDefaultBooking()
-	{
-		int[] id= {1,2,3};
-		String[] name= {"User1","User2","User3"};
-		String[] hotel= {"Hotel1","Hotel2","Hotel3"};
-		double[] cost= {1000,400,2000};
+	public Collection<List<Hotel>> getHotelData(){
 		
-		for(int i=0;i<id.length;i++)
-		{
-			BookingInfo book=new BookingInfo();
-			
-			book.setHotelName(hotel[i]);
-			book.setUserName(name[i]);
-			book.setCost(cost[i]);
-			book.setUserId(id[i]);
-			
-			bookList.add(book);
-		}
+		return hotelMap.values();
 	}
 	
-	
-	public List<HotelInfo> getHotelData(){
-		
-		return hotelList;
-	}
-	
-	public boolean addHotel(HotelInfo hotel)
+	public boolean addHotel(Hotel hotel)
 	{
-	     hotelList.add(hotel);
+	     String location=hotel.getLocation();
+	     
+	     List<Hotel> list=hotelMap.get(location);
+	     
+	     if(list==null)
+	     {
+	    	 list=new ArrayList<>();
+	     }
+	     
+	     list.add(hotel);
+	     hotelMap.put(location, list);
 	     
 	     return true;
 	}
 	
-	
-	public int  addUser(User user)
+	public boolean addUser(User user)
 	{
 		int cust_id=generateId();
 		
@@ -108,31 +113,39 @@ public class HotelOperations{
 		
 		userList.add(user);
 		
-		return cust_id;
+		return true;
 	}
 	
-	public List<HotelInfo> sortByName(){
+	public Collection<List<Hotel>> sortByName(){
 		
-		Collections.sort(hotelList,new Comparator<HotelInfo>(){
+		Collection<List<Hotel>> list=getHotelData();
+		
+		for(List<Hotel> hotelList:list)
+		{
+		Collections.sort(hotelList,new Comparator<Hotel>(){
 
 			@Override
-			public int compare(HotelInfo name1, HotelInfo name2) {
+			public int compare(Hotel name1, Hotel name2) {
 				return name2.getName().compareTo(name1.getName());
 			}
 			
 		});
+		
+		list.add(hotelList);
+		}
 	   
-		return hotelList;
+		return list;
+		}
 		
 			
-	}
 	
-	public List<HotelInfo> sortByRating()
+	
+	/*public List<Hotel> sortByRating()
 	{
-		Collections.sort(hotelList,new Comparator<HotelInfo>(){
+		Collections.sort(hotelList,new Comparator<Hotel>(){
            
 			@Override
-			public int compare(HotelInfo name1, HotelInfo name2) {
+			public int compare(Hotel name1, Hotel name2) {
 				if (name1.getRating() < name2.getRating()) {
 					  return 1;
 					} else if (name1.getRating() > name2.getRating()) {
@@ -149,12 +162,12 @@ public class HotelOperations{
 		
 	}
 	
-	public List<HotelInfo> sortByRooms()
+	public List<Hotel> sortByRooms()
 	{
-		Collections.sort(hotelList,new Comparator<HotelInfo>(){
+		Collections.sort(hotelList,new Comparator<Hotel>(){
 
 			@Override
-			public int compare(HotelInfo name1, HotelInfo name2) {
+			public int compare(Hotel name1, Hotel name2) {
 				return name1.getRooms()-name2.getRooms();
 			}
 			
@@ -163,15 +176,15 @@ public class HotelOperations{
 		return hotelList;
 	}
 	
-	public List<HotelInfo> getLocaation(String location)
+	public List<Hotel> getLocaation(String location)
 	{
-		List<HotelInfo> list=new ArrayList<>();
+		List<Hotel> list=new ArrayList<>();
 		
 		for(int i=0;i<hotelList.size();i++)
 		{
-			HotelInfo hotel=hotelList.get(i);
+			Hotel hotel=hotelList.get(i);
 			String current=hotel.getLocation();
-		    if(current.equalsIgnoreCase(location))
+		    if(current.equals(location))
 		    {
 		    	list.add(hotel);
 		    }
@@ -180,9 +193,7 @@ public class HotelOperations{
 		return list;
 	}
 	
-	public List<BookingInfo> getBookingDetails(){
-		return bookList;
+	public List<User> getUsers(){
+		return list;
 	}
-
-	
-}
+}*/
