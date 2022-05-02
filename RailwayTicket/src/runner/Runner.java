@@ -28,11 +28,12 @@ public class Runner {
 	
 	return type;
 	}
-	public Berth getType(int number,int size)
+	/*public Berth getType(int number,int size)
 	{
 		List<String> list=chooseType();
 		String type=list.get(number);
 		List<Berth> temp=reader.checkTypeAvailable(type);
+		
 		size=temp.size();
 		
 		
@@ -41,10 +42,10 @@ public class Runner {
 			return temp.get(0);
 		}
 		
-		return getType(number+1,size);
+		return getType(number++,size);
 		
 
-	}
+	}*/
 public static void main(String[] args)
 {
 	Runner runner =new Runner();
@@ -71,6 +72,7 @@ public static void main(String[] args)
 		scanner.nextLine();
 		
 		List<Passenger> list=new ArrayList<>();
+		List<String> listt=runner.chooseType();
 		
 		for(int i=0;i<number;i++)
 		{
@@ -88,8 +90,23 @@ public static void main(String[] args)
 		System.out.println("1. lower 2. middle 3.upper");
 		int num=scanner.nextInt();
 		scanner.nextLine();
-		Berth berth=runner.getType(num-1,0);
-		String type=berth.getType();
+		Berth berth=reader.checkTypeAvailable(listt.get(num-1));
+		String type="";
+		if(berth==null)
+		{
+			type="waiting";
+			int count=reader.getWaitingCount();
+			if(count==0)
+			{
+				System.out.println("No tickets available");
+				break;
+			}
+			
+		}
+		else
+		{
+		type=berth.getType();
+		}
 		System.out.println("Allocated type : "+type);
 		
 		Passenger passenger=new Passenger();

@@ -12,7 +12,8 @@ import ticket.Ticket;
 public class RailwayOperation {
 	
 	private int ticketNum=1000;
-	 //int racNum=0;
+	private int racNum=0;
+	private int waitingNum=0;
 	
 	Map<String,List<Berth>> freeSpace=new HashMap<>();
 	Map<Integer,Passenger> filledSpace=new HashMap<>();
@@ -28,6 +29,7 @@ public class RailwayOperation {
 		String[] type= {"upper","middle","lower","rac"};
 		
 		int k=0;
+		int count=1;
 		for(int i=0;i<number;i++)
 		{
 			if(i%type.length==0)
@@ -35,6 +37,13 @@ public class RailwayOperation {
 				k=0;
 			}
 			
+			if(type[k].equals("rac"))
+			{
+				racNum=count*2;
+				waitingNum=racNum/2;
+			}
+			
+		
 			List<Berth> list=freeSpace.get(type[k]);
 			
 			Berth berth=new Berth();
@@ -52,14 +61,51 @@ public class RailwayOperation {
 			freeSpace.put(type[k], list);
 			
 			k++;
+			
 		}
 	}
 	
-	public List<Berth> checkTypeAvailable(String type)
+	public Berth checkTypeAvailable(String type)
 	{
-		System.out.println("freespace in "+freeSpace);
-		List<Berth> list=freeSpace.get(type);
-		return list;
+		List<Berth> list=null;
+		Berth berth=null;
+		
+		   if(freeSpace.get(type).size()!=0)
+		   {
+			  list=freeSpace.get(type);
+			  berth=list.get(0);
+		   }
+		
+		   else if(freeSpace.get("lower").size()!=0)
+			{
+				list=freeSpace.get("lower");
+				berth=list.get(0);
+			}
+			
+			else if(freeSpace.get("middle").size()!=0)
+			{
+				list=freeSpace.get("middle");
+				berth=list.get(0);
+			}
+			
+			else if(freeSpace.get("upper").size()!=0)
+			{
+				list=freeSpace.get("upper");
+				berth=list.get(0);
+			}
+			
+			else if(freeSpace.get("rac").size()!=0)
+			{
+				list=freeSpace.get("rac");
+				berth=list.get(0);
+			}
+			
+			else
+			{
+				return null;
+			}
+		
+		return berth;
 		
 	}
 	
@@ -80,11 +126,18 @@ public class RailwayOperation {
 		
 		if(type.equals("waiting"))
 		{
+			--waitingNum;
+			System.out.println("Waiting count "+waitingNum);
 			String result= checkType(type,temp);
 		}
 
 		
 		
+	}
+	
+	public int getWaitingCount() {
+		
+		return waitingNum;
 	}
 		
 	public boolean bookBerth(Passenger passenger,Berth berth)
@@ -94,26 +147,34 @@ public class RailwayOperation {
 		
 		//String check=checkType(type,passenger);
 		
+      
 		int number=berth.getNumber();
 		
 		if(type.equals("rac"))
 		{
+			--racNum;
 			passenger.setBerthNum(number);
-			checkType(type,passenger);
+		    checkType(type,passenger);
+		    
+		    if(racNum%2==0)
+		    {
+		    	 List<Berth> list=freeSpace.get(type);
+					
+					list.remove(berth);
+		    }
 			
 		}
-		
+	
 		else
 		{
-		
-		List<Berth> list=freeSpace.get(type);
-		
-		list.remove(berth);
-		
-		
-		passenger.setBerthNum(number);
+			 List<Berth> list=freeSpace.get(type);
+				
+				list.remove(berth);
+				
+				
+				
+				passenger.setBerthNum(number);
 	
-		
 	    filledSpace.put(number, passenger);
 		}
 	
@@ -141,6 +202,7 @@ public class RailwayOperation {
 			waitingMap.put(type, list);
 		}
 		
+		System.out.println("Waiting map : "+waitingMap);
 		return type;
 	}
 		
@@ -190,19 +252,16 @@ public class RailwayOperation {
 			Passenger passenger=list.get(i);
 			
 			int number=passenger.getBerthNum();
-			String type=passenger.getAllocatedType();
-			if(type.equals("rac"))
-			{
-			moveRAC(type,number);
-			}
-			else if(type.equals("waiting"))
-			{
-			moveWaiting(type,number);
-			}
 			
-			//filledSpace.get(number);
-		}
+			filledSpace.remove(number);
+			
+			moveRAC("rac",number);
 		
+			moveWaiting("waiting",number);
+		
+			
+		}
+		    System.out.println("after cancel filled map : "+filledSpace);
 			return true;
 		
 	}
@@ -210,10 +269,18 @@ public class RailwayOperation {
 	public void moveRAC(String type,int number)
 	{
 		List<Passenger> list=waitingMap.get(type);
-	
+		
+		if(list==null || list.isEmpty())
+		{
+			return;
+		}
+	       // System.out.println("List : "+list);
+		
 			Passenger passenger=list.get(0);
 			
+			
 			filledSpace.put(number, passenger);
+			list.remove(passenger);
 		
 	}
 	
@@ -221,9 +288,11 @@ public class RailwayOperation {
 	{
 		List<Passenger> list=waitingMap.get(type);
 		
-		for(int i=0;i<number;i++)
+		if(list==null || list.isEmpty())
 		{
-			Passenger passenger=list.get(i);
+			return;
+		}
+			Passenger passenger=list.get(0);
 			
 			List<Passenger> temp=waitingMap.get("rac");
 			
@@ -235,7 +304,7 @@ public class RailwayOperation {
 			temp.add(passenger);
 			
 			waitingMap.put("rac", temp);
-		}
+		
 	}
 
 }
