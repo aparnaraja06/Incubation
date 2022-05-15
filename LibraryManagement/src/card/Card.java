@@ -1,8 +1,7 @@
 package card;
 
-public class Card 
-{
-
+public class Card {
+	
 	private int customerId;
 	private String name;
 	private int age;
@@ -51,5 +50,5 @@ public class Card
 				+ "\n mobile : " + mobile + "\n location : " + location;
 	}
 	
-	
+
 }

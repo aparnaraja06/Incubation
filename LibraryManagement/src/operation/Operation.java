@@ -1,6 +1,10 @@
 package operation;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,22 +13,22 @@ import book.Book;
 import card.Card;
 import order.Order;
 
-public class Operation 
-{
-
-	private int cardId=100;
-	private int bookId=0;
+public class Operation {
+	
+	private int cardNum=0;
+	private int bookId=100;
 	private int orderId=1000;
 	
 	Map<String,List<Book>> availableMap=new HashMap<>();
 	Map<Integer,Card> customerMap=new HashMap<>();
 	Map<Integer,Book> bookMap=new HashMap<>();
-	Map<Integer,List<Order>> orderMap=new HashMap<>();
+	Map<Integer,List<Book>> filledMap=new HashMap<>();
+	Map<Integer,Map<String,Order>> orderMap=new HashMap<>();
 	Map<String,List<Integer>> waitingMap=new HashMap<>();
 	
-	private int generateCardId() 
+	private int generateCardNum()
 	{
-		return ++cardId;
+		return ++cardNum;
 	}
 	
 	private int generateBookId()
@@ -117,7 +121,7 @@ public class Operation
 		
 		for(int i=0;i<name.length;i++)
 		{
-			int id=generateCardId();
+			int id=generateCardNum();
 			
 			Card card=new Card();
 			
@@ -131,71 +135,142 @@ public class Operation
 			customerMap.put(id, card);
 		}
 	}
+	
+	public Card getDetails(int cardNumber)
+	{
+		Card card=customerMap.get(cardNumber);
 		
-		public List<Book> getBookBySearch(String search)
+		return card;
+	}
+	
+	public List<Book> getBook(String title)
+	{
+		List<Book> list=availableMap.get(title);
+		
+		return list;
+	}
+	
+	public Book getBookById(int id)
+	{
+		Book book=bookMap.get(id);
+		
+		if(book==null)
 		{
-			List<Book> list=availableMap.get(search);
-			
-			if(list==null)
-			{
-				return null;
-			}//not available
-			
-			return list;
+			return null;
 		}
 		
-		public int rackNumber(int id)
+		return book;
+	}
+	
+	public void updateOrder(Book book,int cardNumber)
+	{
+		List<Book> temp=filledMap.get(cardNumber);
+		
+		int bookId=book.getId();
+		
+		if(temp==null)
 		{
-			Book book=bookMap.get(id);
-			
-			int rack=book.getRackNum();
-			
-			return rack;
+			temp=new ArrayList<>();
 		}
 		
-		public int addCustomer(Card customer)
+		filledMap.put(bookId, temp);
+	}
+	
+	public int checkMaximumLimit(int cardNumber)
+	{
+		List<Book> temp=orderMap.get(cardNumber);
+		
+		if(temp==null)
 		{
-			int id=generateCardId();
-			
-			customerMap.put(id, customer);
-			
-			return id;
+			return 0;
 		}
 		
-		public Card showDetails(int number)
+		/*if(temp.size()==5)
 		{
-			Card card=customerMap.get(number);
-			
-			return card;
+			re
+		}*/
+		
+		return temp.size();
+	}
+	
+	public void removeInAvailable(Book book)
+	{
+		int id=book.getId();
+		
+		bookMap.remove(id);
+	}
+	
+	public boolean storeInWaitingList(int cardNum,String title)
+	{
+		List<Integer> list=waitingMap.get(title);
+		
+		if(list==null)
+		{
+			list=new ArrayList<>();
 		}
 		
-		public int  isMaximum(int number)
-		{
-			List<Order> list=orderMap.get(number);
-			
-			if(list==null || list.isEmpty())
-			{
-				return 0;
-			}//0-->no order/5 maximum
-			
-			return list.size();
-		}
+		list.add(cardNum);
 		
-		public Book getBook(int id)
-		{
-			Book book=bookMap.get(id);
-			
-			return book;
-		}
+		waitingMap.put(title, list);
 		
-		public int orderBook(Book book)
-		{
-			int id=generateOrderId();
-			
-			String type=book.ge
-			
-		}
+		return true;
+	}
+	
+	/*public boolean returnBook(Book book,int cardNum)
+	{
+		int id=book.getId();
+		
+		Map<Integer,Book> temp=orderMap.get(cardNum);
+		temp.remove(id);
+		
+	}*/
+	
+	public String getDate() {
+		
+		long millis=System.currentTimeMillis();
+		
+		DateFormat date=new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+		
+		Date result=new Date(millis);
+		
+		String time=date.format(result);
+		
+		return time;
+	}
+	
+	public String lastDate()
+	{
+		 Date currentDate = new Date();
+		 DateFormat date=new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+	 
+	        Calendar cal = Calendar.getInstance();
+	        cal.setTime(currentDate);
+	 
+	        // add 1 days to current day
+	        cal.add(Calendar.DAY_OF_MONTH, 10);
+	 
+	        Date datePlus10 = cal.getTime();
+	        
+	        String result=date.format(datePlus10);
+	        
+	        return result;
+	}
+	
+	public void placeOrder(Book book,int cardNum)
+	{
+		int id=generateOrderId();
+		
+		int book_id=book.getId();
+		String date=getDate();
+		String last=lastDate();
 		
 		
+		Order order=new Order();
 		
+		order.setBookId(book_id);
+		order.setCustomerId(cardNum);
+		order.setId(id);
+		order.setOrderDate(date);
+		order.setReturnDate(last);
+	}
 }

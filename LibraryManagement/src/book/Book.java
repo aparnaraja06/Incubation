@@ -1,8 +1,7 @@
 package book;
 
-public class Book 
-{
-      
+public class Book {
+	
 	private String title;
 	private String author;
 	private String category;
@@ -73,5 +72,5 @@ public class Book
 				+ "\n rackNum : " + rackNum + "\n publishedDate : "+ publishedDate;
 	}
 	
-	
+
 }
