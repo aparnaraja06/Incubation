@@ -1,13 +1,14 @@
 package book;
 
-public class Book {
-	
+public class Book 
+{
+      
 	private String title;
 	private String author;
 	private String category;
 	private int id;
 	private String language;
-	private double amount;
+	private String status;
 	private int edition;
 	private int rackNum;
 	private String publishedDate;
@@ -26,6 +27,12 @@ public class Book {
 	public String getCategory() {
 		return category;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public void setCategory(String category) {
 		this.category = category;
 	}
@@ -41,12 +48,7 @@ public class Book {
 	public void setLanguage(String language) {
 		this.language = language;
 	}
-	public double getAmount() {
-		return amount;
-	}
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
+	
 	public int getEdition() {
 		return edition;
 	}
@@ -67,10 +69,11 @@ public class Book {
 	}
 	@Override
 	public String toString() {
-		return " title : " + title + "\n author : " + author + "\n category : " + category + "\n id : " + id +
-				"\n language : "+language + "\n amount : " + amount + "\n edition : " + edition 
-				+ "\n rackNum : " + rackNum + "\n publishedDate : "+ publishedDate;
+		
+		return "\n title : " + title + "\n author : " + author + "\n category : " + category + "\n id : " + id +
+				"\n language : "+language + "\n status : " + status + "\n edition : " + edition 
+				+ "\n rackNum : " + rackNum + "\n publishedDate : "+ publishedDate+" \n ----------------";
 	}
 	
-
+	
 }

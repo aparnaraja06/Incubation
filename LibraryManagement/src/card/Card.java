@@ -1,13 +1,22 @@
 package card;
 
-public class Card {
-	
+public class Card 
+{
+
 	private int customerId;
 	private String name;
 	private int age;
 	private String gender;
 	private long mobile;
 	private String location;
+	private int maxLimit;
+	
+	public int getMaxLimit() {
+		return maxLimit;
+	}
+	public void setMaxLimit(int maxLimit) {
+		this.maxLimit = maxLimit;
+	}
 	public int getCustomerId() {
 		return customerId;
 	}
@@ -47,8 +56,8 @@ public class Card {
 	@Override
 	public String toString() {
 		return "card Number : " + customerId + "\n name : " + name + "\n age : " + age + "\n gender : " + gender
-				+ "\n mobile : " + mobile + "\n location : " + location;
+				+ "\n mobile : " + mobile + "\n location : " + location+"\n Maximum Limit : "+maxLimit;
 	}
 	
-
+	
 }

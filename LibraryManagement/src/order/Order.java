@@ -1,6 +1,7 @@
 package order;
 
-public class Order {
+public class Order 
+{
 
 	private int id;
 	private int customerId;
@@ -42,5 +43,6 @@ public class Order {
 		return "id : " + id + "\n customerId : " + customerId + "\n bookId : " + bookId + "\n orderDate : " 
 	+ orderDate+ "\n returnDate : " + returnDate;
 	}
+	
 	
 }
