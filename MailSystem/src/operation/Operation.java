@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mail.Mail;
 import user.User;
@@ -15,6 +17,53 @@ public class Operation {
 	Map<String,User> userMap=new HashMap<>();
 	Map<String,List<String>> groupMap=new HashMap<>();
 	Map<String,Map<String,List<Mail>>> mailMap=new HashMap<>();
+	Map<String,List<String>> shareMap=new HashMap<>();
+	
+	
+	public void addDefaultUsers()
+	{
+		String[] mail= {"karthik@gmail.com","ram@gmail.com","sam@gmail.com","uma@gmail.com","suba@gmail.com"};
+		String[] name= {"kathik","ram","sam","uma","suba"};
+		String[] pass= {"pass","pass","pass","pass","pass"};
+		
+		
+		for(int i=0;i<mail.length;i++)
+		{
+			User user=new User();
+			
+			user.setName(name[i]);
+			user.setMail(mail[i]);
+			user.setPassword(pass[i]);
+			
+			userMap.put(mail[i], user);
+		}
+	}
+	
+	public void addDefaultGroup()
+	{
+		String mail="student@gmail.com";
+				
+		User user=new User();
+		
+		user.setName("student");
+		user.setMail(mail);
+		user.setPassword("pass");
+		user.setGroup(true);
+		
+		userMap.put(mail, user);
+		
+		List<String> list=groupMap.get(mail);
+		
+		if(list==null)
+		{
+			list=new ArrayList<>();
+		}
+		
+		list.add("uma@gmail.com");
+		list.add("suba@gmail.com");
+		
+		groupMap.put(mail, list);
+	}
 	
 	public boolean addUser(User user)
 	{
@@ -98,6 +147,21 @@ public class Operation {
 		return false;
 	}
 	
+	public boolean passwordValidation(String mail,String pass)
+	{
+		if(pass.length()<8)
+		{
+			return false;
+		}
+		
+		Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+        Matcher matcher = pattern.matcher(pass);
+        
+        boolean result=matcher.find();
+        
+        return result;
+	}
+	
 	public boolean composeMail(Mail mail)
 	{
 		String from=mail.getFrom();
@@ -107,7 +171,37 @@ public class Operation {
 		
 		mail.setDate(date);
 		
-		Map<String,List<Mail>>tempMap=mailMap.get(to);
+		boolean check=groupMap.containsKey(to);
+		
+		if(check)
+		{
+			sentGroup(to,mail);
+		}
+		else
+		{
+			updateInbox(to,mail);
+		}
+		
+		updateSent(from,mail);
+		
+		return true;
+	}
+	
+	public void sentGroup(String to,Mail mail)
+	{
+		List<String> list=groupMap.get(to);
+		
+		for(int i=0;i<list.size();i++)
+		{
+			String temp=list.get(i);
+			
+			updateInbox(temp,mail);
+		}
+	}
+	
+	public void updateInbox(String to,Mail mail)
+	{
+       Map<String,List<Mail>>tempMap=mailMap.get(to);
 		
 		if(tempMap==null)
 		{
@@ -126,10 +220,6 @@ public class Operation {
 		tempMap.put("Inbox", list);
 		
 		mailMap.put(to, tempMap);
-		
-		updateSent(from,mail);
-		
-		return true;
 	}
 	
 	public void updateSent(String from,Mail mail)
@@ -170,6 +260,21 @@ public class Operation {
 		return list;
 	}
 	
+	public List<Mail> shared(String mail)
+	{
+		
+        Map<String,List<Mail>>tempMap=mailMap.get(mail);
+		
+		if(tempMap==null)
+		{
+			tempMap=new HashMap<>();
+		}
+		
+		List<Mail> list=tempMap.get("Share");
+		
+		return list;
+	}
+	
 	public List<Mail> sentMail(String mail)
 	{
 		
@@ -180,7 +285,7 @@ public class Operation {
 			tempMap=new HashMap<>();
 		}
 		
-		List<Mail> list=tempMap.get("Inbox");
+		List<Mail> list=tempMap.get("Sent");
 		
 		return list;
 	}
@@ -222,6 +327,36 @@ public class Operation {
 	{
 		String to=mail.getTo();
 		
+     boolean check=groupMap.containsKey(to);
+		
+		if(check)
+		{
+			recallGroup(to,mail);
+		}
+		else
+		{
+			recallUser(to,mail);
+		}
+		
+		updateStatus(id,mail);
+		
+		return true;
+	}
+	
+	public void recallGroup(String to,Mail mail)
+	{
+		List<String> list=groupMap.get(to);
+		
+		for(int i=0;i<list.size();i++)
+		{
+			String temp=list.get(i);
+			
+			recallUser(temp,mail);
+		}
+	}
+	
+	public void recallUser(String to,Mail mail)
+	{
        Map<String,List<Mail>>tempMap=mailMap.get(to);
 		
 		List<Mail> list=tempMap.get("Inbox");
@@ -231,10 +366,6 @@ public class Operation {
        tempMap.put("Inbox", list);
 		
 		mailMap.put(to, tempMap);
-		
-		updateStatus(id,mail);
-		
-		return true;
 	}
 	
 	public void updateStatus(String id,Mail mail)
@@ -242,6 +373,8 @@ public class Operation {
 		 Map<String,List<Mail>>tempMap=mailMap.get(id);
 			
 			List<Mail> list=tempMap.get("Sent");
+			
+			list.remove(mail);
 			
 			mail.setRecalled(true);
 			
@@ -253,9 +386,9 @@ public class Operation {
 			
 	}
 	
-	public boolean inboxSharing(String mail,List<Mail> list)
+	public boolean inboxSharing(String mail,String to,List<Mail> list)
 	{
-       Map<String,List<Mail>>tempMap=mailMap.get(mail);
+       Map<String,List<Mail>>tempMap=mailMap.get(to);
 		
 		if(tempMap==null)
 		{
@@ -264,9 +397,44 @@ public class Operation {
 		
 		tempMap.put("Share", list);
 		
-		mailMap.put(mail, tempMap);
+		mailMap.put(to, tempMap);
+		
+	    List<String> listt=shareMap.get(mail);
+	    
+	    if(listt==null)
+	    {
+	    	listt=new ArrayList<>();
+	    }
+	    
+	    listt.add(to);
+	    
+	    shareMap.put(mail, listt);
 		
 		return true;
+	}
+	
+	public List<String> getSharedMail(String mail)
+	{
+		List<String> list=shareMap.get(mail);
+		
+		return list;
+	}
+	
+	public boolean revokeInbox(String mail,String to)
+	{
+		 Map<String,List<Mail>>tempMap=mailMap.get(to);
+		 
+		 tempMap.remove("Share");
+		 
+		 mailMap.put(to, tempMap);
+		 
+		List<String> list= shareMap.get(mail);
+		
+		list.remove(to);
+		
+		shareMap.put(mail, list);
+		 
+		 return true;
 	}
 
 }
